@@ -1,0 +1,126 @@
+############################
+# OS & Editor
+############################
+.DS_Store
+Thumbs.db
+
+.vscode/
+!.vscode/settings.json
+!.vscode/extensions.json
+
+
+.env
+############################
+# Python
+############################
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+.env
+.env.*
+venv/
+.venv/
+ENV/
+env/
+
+############################
+# Jupyter / Experiments
+############################
+.ipynb_checkpoints/
+*.log
+
+############################
+# Secrets & API keys
+############################
+*.key
+*.pem
+*.crt
+secrets.yaml
+secrets.json
+config.yaml
+config.json
+
+############################
+# ML / AI Artifacts
+############################
+models/
+checkpoints/
+weights/
+*.pt
+*.pth
+*.onnx
+*.ckpt
+
+############################
+# Vector Databases / RAG
+############################
+chroma/
+chroma_db/
+faiss_index/
+faiss/
+pinecone/
+vector_store/
+embeddings/
+
+############################
+# Datasets
+############################
+data/
+datasets/
+raw_data/
+processed_data/
+*.csv
+*.tsv
+*.parquet
+*.jsonl
+
+############################
+# Web / UI
+############################
+.streamlit/
+.gradio/
+.gradio_cache/
+
+############################
+# FastAPI / Flask / Django
+############################
+instance/
+__pypackages__/
+staticfiles/
+media/
+
+############################
+# Deployment
+############################
+.cache/
+.cache_huggingface/
+.huggingface/
+hf_cache/
+
+############################
+# MLOps / Tracking
+############################
+wandb/
+clearml/
+mlruns/
+
+############################
+# Tests / Coverage
+############################
+.pytest_cache/
+.coverage
+htmlcov/
+
+############################
+# Temporary files
+############################
+*.tmp
+*.swp
+*.bak

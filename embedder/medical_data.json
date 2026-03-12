@@ -1,0 +1,134 @@
+[
+  {
+    "id": "resp_001",
+    "condition": "Common Cold",
+    "symptoms": "runny nose, sneezing, sore throat, mild cough, congestion, low-grade fever (99-100°F), watery eyes",
+    "treatment": "Rest, stay hydrated (8-10 glasses of water daily), OTC pain relievers (acetaminophen or ibuprofen), throat lozenges, humidifier use, saline nasal drops"
+  },
+  {
+    "id": "resp_002",
+    "condition": "Influenza (Flu)",
+    "symptoms": "sudden high fever (100-104°F), severe body aches, extreme fatigue, dry cough, headache, chills, sweating, nasal congestion, sore throat",
+    "treatment": "Rest and isolation, plenty of fluids, antiviral medications (oseltamivir/Tamiflu) if started within 48 hours, fever reducers, avoid contact with others for 24 hours after fever breaks"
+  },
+  {
+    "id": "resp_003",
+    "condition": "Pneumonia",
+    "symptoms": "persistent cough with thick yellow/green/bloody phlegm, sharp chest pain worsening with deep breathing, difficulty breathing, high fever (102-105°F), rapid breathing, confusion (in elderly), fatigue, sweating, chills",
+    "treatment": "Antibiotics for bacterial pneumonia, hospitalization for severe cases, oxygen therapy if needed, IV fluids, chest physiotherapy, follow-up chest X-ray"
+  },
+  {
+    "id": "resp_004",
+    "condition": "Bronchitis",
+    "symptoms": "persistent cough with mucus (clear, white, yellow, or green), chest discomfort, mild fatigue, mild fever (100-101°F), shortness of breath, wheezing, lasting 2-3 weeks",
+    "treatment": "Rest, fluids, cough suppressants (dextromethorphan), expectorants (guaifenesin), bronchodilators if wheezing, humidifier use, avoid smoking and irritants"
+  },
+  {
+    "id": "resp_005",
+    "condition": "Asthma Attack",
+    "symptoms": "severe difficulty breathing, tight chest, wheezing, rapid breathing, inability to speak in full sentences, bluish lips or fingernails, severe anxiety, cough that won't stop",
+    "treatment": "Use rescue inhaler (albuterol) immediately, sit upright, take slow deep breaths, call 911 if no improvement after inhaler use, emergency room evaluation, oral or IV corticosteroids"
+  },
+  {
+    "id": "allergy_001",
+    "condition": "Allergic Rhinitis (Hay Fever)",
+    "symptoms": "sneezing fits, itchy nose and eyes, clear watery nasal discharge, nasal congestion, postnasal drip, no fever, fatigue, dark circles under eyes",
+    "treatment": "Antihistamines (loratadine, cetirizine), nasal corticosteroid sprays (fluticasone), avoid known allergens, keep windows closed during high pollen days, shower after outdoor activities, air purifiers"
+  },
+  {
+    "id": "allergy_002",
+    "condition": "Food Allergy Reaction",
+    "symptoms": "itching or tingling in mouth, hives, swelling of lips/face/throat, difficulty breathing, nausea, vomiting, diarrhea, dizziness, rapid pulse",
+    "treatment": "Mild: antihistamines. Severe (anaphylaxis): epinephrine auto-injector (EpiPen) immediately, call 911, lie down with legs elevated, may need second dose after 5-15 minutes"
+  },
+  {
+    "id": "gi_001",
+    "condition": "Gastroenteritis (Stomach Flu)",
+    "symptoms": "watery diarrhea, nausea, vomiting, stomach cramps, low-grade fever, muscle aches, headache, loss of appetite",
+    "treatment": "Rest, frequent small sips of clear liquids (water, broth, oral rehydration solutions), gradually introduce bland foods (BRAT diet: bananas, rice, applesauce, toast), avoid dairy temporarily, anti-diarrheal medications if needed"
+  },
+  {
+    "id": "gi_002",
+    "condition": "Food Poisoning",
+    "symptoms": "sudden nausea, vomiting, diarrhea (possibly bloody), abdominal cramps, fever, weakness, symptoms starting 1-6 hours after eating contaminated food",
+    "treatment": "Rest, clear liquids, avoid solid foods until vomiting stops, oral rehydration solutions, gradually return to normal diet, avoid anti-diarrheal medications if diarrhea is bloody"
+  },
+  {
+    "id": "gi_003",
+    "condition": "Appendicitis",
+    "symptoms": "sudden pain starting around navel moving to lower right abdomen, pain worsens with movement/coughing, loss of appetite, nausea, vomiting, fever (99-102°F), inability to pass gas, abdominal swelling",
+    "treatment": "Emergency surgery (appendectomy) to remove appendix, antibiotics, IV fluids, hospitalization required, laparoscopic or open surgery depending on severity"
+  },
+  {
+    "id": "cardio_001",
+    "condition": "Heart Attack (Myocardial Infarction)",
+    "symptoms": "severe chest pain/pressure (crushing sensation), pain radiating to left arm/jaw/back, shortness of breath, cold sweats, nausea, lightheadedness, sense of impending doom, symptoms may be milder in women/diabetics",
+    "treatment": "CALL 911 IMMEDIATELY, chew aspirin (if not allergic), stay calm, sit or lie down, emergency angioplasty or thrombolytic drugs, hospitalization, cardiac rehabilitation"
+  },
+  {
+    "id": "cardio_002",
+    "condition": "Hypertensive Crisis",
+    "symptoms": "blood pressure >180/120, severe headache, confusion, vision changes, chest pain, difficulty breathing, irregular heartbeat, seizures, unresponsiveness",
+    "treatment": "CALL 911, emergency room evaluation, IV medications to lower blood pressure gradually, monitoring in intensive care, treat underlying complications"
+  },
+  {
+    "id": "neuro_001",
+    "condition": "Migraine",
+    "symptoms": "severe throbbing headache (often one-sided), nausea, vomiting, extreme sensitivity to light and sound, visual disturbances (aura), dizziness, lasting 4-72 hours",
+    "treatment": "Rest in dark quiet room, triptans (sumatriptan) at first sign, NSAIDs (ibuprofen), anti-nausea medications, cold compress, avoid triggers, preventive medications if frequent"
+  },
+  {
+    "id": "neuro_002",
+    "condition": "Stroke",
+    "symptoms": "sudden numbness/weakness of face/arm/leg (especially one side), confusion, trouble speaking/understanding, vision problems, dizziness, loss of balance, severe headache with no cause",
+    "treatment": "CALL 911 IMMEDIATELY, remember FAST (Face drooping, Arm weakness, Speech difficulty, Time to call 911), emergency clot-busting drugs or mechanical thrombectomy (must be within 3-4.5 hours), hospitalization, rehabilitation"
+  },
+  {
+    "id": "infect_001",
+    "condition": "Urinary Tract Infection (UTI)",
+    "symptoms": "burning sensation during urination, frequent urgent need to urinate, cloudy/bloody/strong-smelling urine, pelvic pain (women), lower back pain, low fever",
+    "treatment": "Antibiotics (usually 3-7 day course: trimethoprim-sulfamethoxazole, nitrofurantoin, or ciprofloxacin), drink plenty of water, urinate frequently, pain relievers, avoid irritants (caffeine, alcohol)"
+  },
+  {
+    "id": "infect_002",
+    "condition": "Strep Throat",
+    "symptoms": "severe sore throat, pain when swallowing, red swollen tonsils with white patches, tiny red spots on roof of mouth, swollen lymph nodes, fever (101-104°F), headache, no cough",
+    "treatment": "Antibiotics (penicillin or amoxicillin) for 10 days, complete full course even if feeling better, pain relievers, throat lozenges, warm liquids, rest, avoid contact with others for 24 hours after starting antibiotics"
+  },
+  {
+    "id": "infect_003",
+    "condition": "COVID-19",
+    "symptoms": "fever/chills, cough, shortness of breath, fatigue, muscle/body aches, headache, loss of taste or smell, sore throat, congestion, nausea, diarrhea, wide range from asymptomatic to severe",
+    "treatment": "Mild: rest, fluids, fever reducers, isolate for 5 days. Severe: hospitalization, oxygen therapy, remdesivir or other antivirals, dexamethasone, monoclonal antibodies (if eligible). Get tested if exposed."
+  },
+  {
+    "id": "derm_001",
+    "condition": "Contact Dermatitis",
+    "symptoms": "red itchy rash, dry cracked skin, bumps/blisters, swelling, burning sensation, skin sensitivity, rash appears where contact occurred (hands, face, arms)",
+    "treatment": "Identify and avoid irritant/allergen, cool wet compresses, anti-itch creams (hydrocortisone), antihistamines for itching, moisturizers, severe cases may need oral corticosteroids"
+  },
+  {
+    "id": "musculo_001",
+    "condition": "Muscle Strain",
+    "symptoms": "sudden pain during activity, muscle stiffness, swelling, bruising, limited range of motion, muscle spasms, weakness in affected area",
+    "treatment": "RICE protocol (Rest, Ice 20 min every 2-3 hours, Compression with elastic bandage, Elevation), NSAIDs for pain, gentle stretching after 48 hours, gradual return to activity, physical therapy if severe"
+  },
+  {
+    "id": "musculo_002",
+    "condition": "Fracture (Broken Bone)",
+    "symptoms": "severe pain at injury site, obvious deformity, inability to move affected area, swelling, bruising, bone protruding through skin (compound fracture), numbness/tingling, grinding sensation",
+    "treatment": "Immobilize the area, DO NOT try to realign bone, apply ice, seek emergency medical care, X-ray for diagnosis, casting/splinting or surgery depending on severity, pain medication, physical therapy"
+  },
+  {
+    "id": "endo_001",
+    "condition": "Diabetic Ketoacidosis (DKA)",
+    "symptoms": "blood sugar >250 mg/dL, extreme thirst, frequent urination, nausea/vomiting, abdominal pain, fruity-smelling breath, confusion, difficulty breathing, weakness",
+    "treatment": "CALL 911 or go to emergency room, hospitalization required, IV insulin, IV fluids, electrolyte replacement, continuous monitoring, treat underlying cause (infection, missed insulin)"
+  },
+  {
+    "id": "mental_001",
+    "condition": "Panic Attack",
+    "symptoms": "sudden intense fear, racing heartbeat, sweating, trembling, shortness of breath, chest pain, nausea, dizziness, feeling of losing control, fear of dying, symptoms peak within 10 minutes",
+    "treatment": "Deep breathing exercises, grounding techniques (5-4-3-2-1 method), move to quiet space, reassure that symptoms will pass, benzodiazepines for severe cases, cognitive behavioral therapy for prevention, SSRI medications"
+  }
+]

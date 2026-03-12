@@ -1,0 +1,1 @@
+Make sure to run embedder/embedding_service.py before running this service.

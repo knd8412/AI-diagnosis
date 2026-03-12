@@ -1,0 +1,9 @@
+torchxrayvision==1.0.1
+torch<2.6.0
+torchvision
+scikit-image
+fastapi
+uvicorn
+python-multipart
+python-dotenv
+motor

@@ -1,0 +1,103 @@
+services:
+  # 1. SHARED REDIS (Chat History & Cache)
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    command: >
+      redis-server 
+      --save "" 
+      --appendonly no
+    restart: unless-stopped
+
+  # 2. BACKEND (FastAPI & Inngest Functions)
+  backend:
+    build: 
+      context: .
+      dockerfile: inngest_workflow/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
+      - INNGEST_EVENT_KEY=local_dev_key
+      - INNGEST_DEV=1
+      - INNGEST_BASE_URL=http://inngest:8288  
+    depends_on:
+      - redis
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  # 3. FRONTEND (Streamlit UI)
+  ui:
+    build:
+      context: .
+      dockerfile: ui/Dockerfile.ui
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    environment:
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - REDIS_URL=redis://redis:6379
+      - BACKEND_URL=http://backend:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  # 4. INNGEST DEV SERVER (Orchestrator)
+  inngest:
+    image: inngest/inngest:latest
+    ports:
+      - "8288:8288"
+    command: inngest dev -u http://backend:8000/api/inngest --host 0.0.0.0
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # 5. Embedding Service
+  embedding-service:
+    build: 
+      context: ./embedder
+      dockerfile: Dockerfile
+    container_name: embedding-service
+    ports:
+      - "5001:5001"
+    environment:
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY}
+      - PORT=5001
+    env_file:
+      - ./.env  # Path to the .env file
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 6. Image Processing Service
+  image_processing:
+    build: ./image_processing
+    command: uvicorn service:app --host 0.0.0.0 --port 8001
+    ports: ["8001:8001"]
+    working_dir: /app/image_processing
+    container_name: image-processing-service
+    environment:
+      - PYTHONPATH=/app/image_processing
+      - MODEL_WEIGHTS=densenet121-res224-all
+    volumes:
+    - ./image_processing:/app/image_processing
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

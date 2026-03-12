@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap');
+
+/* Global Layout */
+html, body, [data-testid="stAppViewContainer"] {
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(135deg, #fff8f5 0%, #fff2ec 100%);
+}
+
+/* Sidebar Styling */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #fff0e8 0%, #ffe8dc 100%) !important;
+    border-right: 1px solid rgba(230, 100, 60, 0.15) !important;
+}
+
+[data-testid="stSidebar"] h1 {
+    font-family: 'Playfair Display', serif !important;
+    background: linear-gradient(90deg, #e05030, #f07840) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    font-size: 1.3rem !important;
+}
+
+/* Consultation Buttons */
+[data-testid="stSidebar"] .stButton > button {
+    background: rgba(230, 100, 60, 0.07) !important;
+    border: 1px solid rgba(220, 90, 50, 0.2) !important;
+    color: #000000 !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+}
+
+[data-testid="stSidebar"] .stButton > button:hover {
+    background: rgba(230, 100, 60, 0.14) !important;
+    transform: translateX(3px) !important;
+}
+
+/* New Consultation Button Primary Styling */
+[data-testid="stSidebar"] .stButton:first-of-type > button {
+    background: linear-gradient(135deg, #e05535, #f07848) !important;
+    color: #ffffff !important;
+    box-shadow: 0 3px 12px rgba(220, 80, 50, 0.25) !important;
+}
+
+/* Chat Bubbles */
+[data-testid="stChatMessage"] {
+    background: rgba(255, 255, 255, 0.75) !important;
+    border: 1px solid rgba(220, 100, 60, 0.12) !important;
+    border-radius: 14px !important;
+    backdrop-filter: blur(6px) !important;
+}
+
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
+    background: rgba(255, 235, 225, 0.8) !important;
+}
+
+/* Greeting Animation */
+.greeting-text {
+    text-align: center;
+    font-family: 'Playfair Display', serif !important;
+    background: linear-gradient(135deg, #e05030 0%, #f07840 50%, #e05030 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-size: 200% auto !important;
+    animation: shimmer 3s linear infinite !important;
+}
+
+@keyframes shimmer {
+    0%   { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+/* Custom classes for JS logic */
+.search-snippet {
+    font-size: 0.75rem; 
+    color: rgba(184, 64, 32, 0.7);
+    margin: -6px 0 10px 4px;
+}
+
+.no-results {
+    font-size: 0.82rem; 
+    color: rgba(184, 64, 32, 0.5);
+    text-align: center;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(#e05535, #f07848);
+    border-radius: 6px;
+}
+
+footer, #MainMenu { visibility: hidden; }

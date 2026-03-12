@@ -1,0 +1,33 @@
+# FastAPI and Server
+fastapi
+uvicorn[standard]
+
+# Inngest - This will install the latest version from PyPI
+inngest>=0.3.0
+
+# Database & Vector Search
+pinecone
+langchain-redis 
+redis
+flask
+
+# AI Models & LLMs
+mistralai
+langchain-openai 
+langchain
+
+# Medical Data Processing
+datasets
+jsonlines
+tqdm
+
+# Other project dependencies
+python-dotenv
+requests
+
+# GUI
+streamlit==1.53.1 
+Pillow
+
+langchain-mistralai
+ragas==0.1.21
