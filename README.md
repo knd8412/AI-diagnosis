@@ -1,0 +1,2 @@
+# Ai-diagnosis
+Retrieval and embedding system for an AI group project, focused on vector storage, semantic search, and LLM-powered information retrieval.
