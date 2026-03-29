@@ -2,9 +2,15 @@
 Embedding Service - Flask API for generating embeddings
 """
 from flask import Flask, request, jsonify
-from mistralai import Mistral
 import os
 from dotenv import load_dotenv
+
+try:
+    # mistralai>=2.x
+    from mistralai.client import Mistral
+except ImportError:
+    # mistralai<2.x
+    from mistralai import Mistral
 
 load_dotenv()
 

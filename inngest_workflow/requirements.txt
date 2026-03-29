@@ -1,0 +1,19 @@
+# Inngest - This will install the latest version from PyPI
+inngest>=0.3.0
+fastapi
+uvicorn[standard]
+python-dotenv
+pinecone
+mistralai
+requests
+sqlalchemy
+psycopg2-binary
+
+# LangChain (required for LLM integration module)
+langchain-core
+langchain-mistralai
+
+# Vector DB and Caching
+chromadb
+redis
+langchain-redis

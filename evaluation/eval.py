@@ -16,21 +16,40 @@ from ragas.embeddings import LangchainEmbeddingsWrapper
 from langchain_mistralai import ChatMistralAI
 from langchain_mistralai.embeddings import MistralAIEmbeddings
 
-# clearml additions
-
-from clearml import Task
-
-task = Task.init(
-    project_name="ragas_evaluation",
-    task_name="mistral_ragas_metrics"
-)
-
-logger = task.get_logger()
-
 # 1. SETUP ENVIRONMENT
 load_dotenv()
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 api_key = os.getenv('MISTRAL_API_KEY')
+
+# ClearML setup - credentials from environment variables
+from clearml import Task
+
+# Get ClearML credentials from .env file
+clearml_api_host = os.getenv('CLEARML_API_HOST')
+clearml_web_host = os.getenv('CLEARML_WEB_HOST')
+clearml_files_host = os.getenv('CLEARML_FILES_HOST')
+clearml_access_key = os.getenv('CLEARML_API_ACCESS_KEY')
+clearml_secret_key = os.getenv('CLEARML_API_SECRET_KEY')
+
+# Set credentials only if they are provided
+if all([clearml_api_host, clearml_web_host, clearml_files_host, clearml_access_key, clearml_secret_key]):
+    Task.set_credentials(
+        api_host=clearml_api_host,
+        web_host=clearml_web_host,
+        files_host=clearml_files_host,
+        key=clearml_access_key,
+        secret=clearml_secret_key
+    )
+    task = Task.init(
+        project_name="ragas_evaluation",
+        task_name="mistral_ragas_metrics"
+    )
+    logger = task.get_logger()
+else:
+    # Fallback if ClearML credentials are not configured
+    print("⚠️  Warning: ClearML credentials not fully configured. Evaluation will run without ClearML logging.")
+    task = None
+    logger = None
 
 # 2. MISTRAL PATCH (Prevents the 'TypeError: dict + dict' crash)
 class SafeUsage(dict):
@@ -91,17 +110,17 @@ print(result)
 
 df = result.to_pandas()
 
-# log to clearml
-
+# Log to ClearML (only if credentials are configured)
 faithfulness_score = df["faithfulness"].mean()
 answer_relevancy_score = df["answer_relevancy"].mean()
 context_precision_score = df["context_precision"].mean()
 context_recall_score = df["context_recall"].mean()
 
-logger.report_scalar("ragas_metrics", "faithfulness", faithfulness_score, iteration=0)
-logger.report_scalar("ragas_metrics", "answer_relevancy", answer_relevancy_score, iteration=0)
-logger.report_scalar("ragas_metrics", "context_precision", context_precision_score, iteration=0)
-logger.report_scalar("ragas_metrics", "context_recall", context_recall_score, iteration=0)
+if logger:
+    logger.report_scalar("ragas_metrics", "faithfulness", faithfulness_score, iteration=0)
+    logger.report_scalar("ragas_metrics", "answer_relevancy", answer_relevancy_score, iteration=0)
+    logger.report_scalar("ragas_metrics", "context_precision", context_precision_score, iteration=0)
+    logger.report_scalar("ragas_metrics", "context_recall", context_recall_score, iteration=0)
 
 # Now we rename the columns to satisfy your project's naming requirement
 df.rename(columns={
@@ -113,11 +132,11 @@ df.rename(columns={
 
 df.to_csv("evaluation/ragas_results.csv", index=False)
 
-# upload artifact to the task
-
-task.upload_artifact(
-    name="ragas_results",
-    artifact_object="evaluation/ragas_results.csv"
-)
+# Upload artifact to ClearML task (only if task is initialized)
+if task:
+    task.upload_artifact(
+        name="ragas_results",
+        artifact_object="evaluation/ragas_results.csv"
+    )
 
 print(f"✅ Results saved to evaluation/ragas_results.csv with custom column names.")

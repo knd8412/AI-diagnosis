@@ -1,0 +1,4 @@
+// file to configure path for IDE to process imports for testing scripts 
+{
+  "extraPaths": ["image_processing"]
+}

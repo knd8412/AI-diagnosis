@@ -13,7 +13,7 @@ PINECONE_CLOUD = os.getenv("PINECONE_CLOUD", "aws")
 
 # Embedding Settings
 EMBEDDING_DIMENSION = 1024
-DOCKER_EMBEDDING_URL = "http://localhost:5000"
+DOCKER_EMBEDDING_URL = os.getenv("EMBEDDING_SERVICE_URL", "http://embedding-service:5001")
 TEXT_FIELD = "page_content"
 
 # Batching

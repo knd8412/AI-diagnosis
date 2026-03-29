@@ -1,0 +1,12 @@
+# Development requirements for testing
+-r requirements.txt   # pulls in everything from the root requirements.txt
+-r image_processing/requirements.txt 
+# -r mongo_service/requirements.txt 
+httpx
+Pillow
+requests
+pytest
+pytest-asyncio
+pytest-cov
+mongomock-motor
+httpx

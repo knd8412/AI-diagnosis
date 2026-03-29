@@ -1,8 +1,8 @@
-from fastapi import FastAPI, BackgroundTasks
+from fastapi import FastAPI, BackgroundTasks, HTTPException
 from pydantic import BaseModel
 import inngest.fast_api
 import inngest
-
+from llm_integration.chains.rag_chains import DiagnosisRAG
 from inngest_workflow import inngest_client, sync_knowledge_base
 
 app = FastAPI(
@@ -10,12 +10,18 @@ app = FastAPI(
     description="Serves the main API and the Inngest background functions.",
 )
 
+class DiagnosisRequest(BaseModel):
+    patient_id: str
+    query: str
+
 # Serve the Inngest functions
 inngest.fast_api.serve(
     app,
     inngest_client,
     [sync_knowledge_base],  
 )
+
+
 
 class SyncRequest(BaseModel):
     user_id: str = "admin"
@@ -42,3 +48,13 @@ async def trigger_knowledge_sync(request: SyncRequest):
         "status": "success", 
         "message": "Knowledge base sync triggered in the background. Check Inngest dashboard for progress."
     }
+
+@app.post("/api/diagnose")
+async def perform_diagnosis(request: DiagnosisRequest):
+    try:
+        # Initialize here so the Backend has full control
+        rag = DiagnosisRAG() 
+        result = rag.diagnose(request.patient_id, request.query)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

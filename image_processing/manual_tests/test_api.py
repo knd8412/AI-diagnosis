@@ -2,7 +2,7 @@ import requests
 import json
 
 URL = "http://localhost:8001/analyze"
-IMAGE_PATH = "/Users/grigory/Downloads/sample_xray.png"
+IMAGE_PATH = "/Users/grigory/Downloads/sample_xray.png" # Update this path to local image for testing
 
 def test_service():
     print(f"Sending image to {URL}...")

@@ -48,5 +48,5 @@ async def _sync_knowledge_base_impl(step, data_path: str = DATA_PATH, ingest_fn=
     name="Sync Medical Knowledge Base to Pinecone",
     trigger=inngest.TriggerEvent(event="knowledge/sync.requested"),
 )
-async def sync_knowledge_base(ctx, step):
-    return await _sync_knowledge_base_impl(step)
+async def sync_knowledge_base(ctx):
+    return await _sync_knowledge_base_impl(ctx.step)

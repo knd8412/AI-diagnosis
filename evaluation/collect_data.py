@@ -1,5 +1,4 @@
 import json
-# ragas_eval.py
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -61,13 +60,12 @@ retrieved_contexts = []
 
 for query in sample_queries:
     print(f"Running query: {query[:50]}...")
-    result = rag.diagnose(query)
+    result = rag.diagnose("eval_session", query)
     
     responses.append(result["diagnosis"])
     # RAGAS expects a list of context strings per query
     raw_contexts = result["retrieved_context"].split("\n\n")
-    clean_contexts = [ctx.split("] ", 1)[-1] if "] " in ctx else ctx for ctx in raw_contexts]
-    retrieved_contexts.append(clean_contexts)
+    retrieved_contexts.append(raw_contexts)
 
 print("✅ All queries processed.")
 

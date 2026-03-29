@@ -2,9 +2,9 @@ import asyncio
 import os
 import tempfile
 import unittest
-from unittest.mock import Mock
+from unittest.mock import AsyncMock, Mock, patch
 
-from inngest_workflow.functions import _sync_knowledge_base_impl
+from inngest_workflow.functions import _sync_knowledge_base_impl, sync_knowledge_base
 
 
 class FakeStep:
@@ -17,6 +17,20 @@ class FakeStep:
 
 
 class InngestFunctionTests(unittest.TestCase):
+    def test_sync_function_uses_ctx_step(self):
+        ctx = Mock()
+        ctx.step = object()
+
+        expected = {"status": "success", "records_processed": 1}
+        with patch(
+            "inngest_workflow.functions._sync_knowledge_base_impl",
+            new=AsyncMock(return_value=expected),
+        ) as impl_mock:
+            result = asyncio.run(sync_knowledge_base._handler(ctx))
+
+        impl_mock.assert_awaited_once_with(ctx.step)
+        self.assertEqual(result, expected)
+
     def test_sync_impl_validates_file_and_ingests(self):
         with tempfile.NamedTemporaryFile(mode="w", delete=False) as tmp:
             tmp.write('{"page_content": "sample"}\n')

@@ -9,8 +9,10 @@ This folder contains the Inngest client + function that syncs prepared respirato
 
 ### Inngest (local)
 - `INNGEST_EVENT_KEY=local_dev_key`
-- `INNGEST_SIGNING_KEY=test-signing-key`
+- `INNGEST_SIGNING_KEY=signkey-test-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef`
 - `INNGEST_DEV=1`
+- `INNGEST_API_BASE_URL=http://inngest:8288` (when running in Docker Compose)
+- `INNGEST_EVENT_API_BASE_URL=http://inngest:8288` (when running in Docker Compose)
 
 ### Inngest (production)
 Use real keys from Inngest dashboard:

@@ -18,6 +18,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY llm_integration/ ./llm_integration/
 COPY ui/ .
+COPY patientIDdb/ ./patientIDdb/
+COPY SQLdb/ ./SQLdb/
 
 # Expose port
 EXPOSE 8501

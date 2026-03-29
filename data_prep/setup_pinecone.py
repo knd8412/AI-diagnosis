@@ -1,14 +1,14 @@
 import os, json, hashlib, requests, time,sys
 from pinecone import Pinecone, ServerlessSpec
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Configuration constants
 from config import PINECONE_INDEX_NAME, PINECONE_NAMESPACE, PINECONE_REGION, PINECONE_CLOUD, EMBEDDING_DIMENSION, BATCH_SIZE
 
 
 MISTRAL_DIMENSION = 1024  
-DOCKER_URL = "http://localhost:5000"
+DOCKER_URL = os.getenv("EMBEDDING_SERVICE_URL", "http://localhost:5000")
 TEXT_FIELD = "page_content"
 
 def ingest_jsonl_to_pinecone(data_path: str) -> int:

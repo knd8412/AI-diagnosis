@@ -1,20 +1,22 @@
 import requests
+import os
 
-# Ensure this matches the service name in docker-compose.yml
-DOCKER_URL = "http://embedding-service:5001"
-
-def embed_query(query_text: str):
+def embed_query(query):
+    # Environment-aware URL
+    embedding_host = os.environ.get("EMBEDDING_SERVICE_HOST", "embedding-service")
+    embedding_port = os.environ.get("EMBEDDING_SERVICE_PORT", "5001")
+    embedding_url = f"http://{embedding_host}:{embedding_port}/embed"
+    
     try:
-        # FIX: The endpoint must be /embed, not the root URL
         response = requests.post(
-            f"{DOCKER_URL}/embed", 
-            json={"text": query_text},
-            timeout=10
+            embedding_url,
+            json={"text": query},
+            timeout=30
         )
         response.raise_for_status()
         return response.json()["embedding"]
-
-    except requests.exceptions.ConnectionError:
-        raise RuntimeError("Cannot connect to embedding service. Ensure the container is running.")
-    except Exception as e:
-        raise RuntimeError(f"Embedding service failed: {e}")
+    except requests.exceptions.RequestException as e:
+        raise RuntimeError(
+            f"Cannot connect to embedding service at {embedding_url}. "
+            f"Ensure the container is running. Error: {e}"
+        )

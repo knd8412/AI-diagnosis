@@ -1,43 +1,66 @@
 services:
+  # 0. BACKEND API + INNGEST FUNCTIONS
+  backend:
+    build:
+      context: .
+      dockerfile: inngest_workflow/Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - INNGEST_APP_ID=ai-diagnosis-assistant
+      - INNGEST_EVENT_KEY=${INNGEST_EVENT_KEY:-local_dev_key}
+      - INNGEST_SIGNING_KEY=${INNGEST_SIGNING_KEY:-signkey-test-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef}
+      - INNGEST_DEV=${INNGEST_DEV:-1}
+      - INNGEST_API_BASE_URL=${INNGEST_API_BASE_URL:-http://inngest:8288}
+      - INNGEST_EVENT_API_BASE_URL=${INNGEST_EVENT_API_BASE_URL:-http://inngest:8288}
+      - DATA_PATH=${DATA_PATH:-data/respiratory_data.jsonl}
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY}
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - EMBEDDING_SERVICE_URL=${EMBEDDING_SERVICE_URL:-http://embedding-service:5001}
+      - CHROMADB_HOST=chromadb
+      - CHROMADB_PORT=8000
+      - EMBEDDING_SERVICE_HOST=embedding-service
+      - EMBEDDING_SERVICE_PORT=5001
+    depends_on:
+      - embedding-service
+    volumes:
+      - ./SQLdb/data:/app/SQLdb/data
+    restart: unless-stopped
+
+  # 0b. INNGEST DEV SERVER
+  inngest:
+    image: inngest/inngest:latest
+    command: inngest dev -u http://backend:8000/api/inngest
+    ports:
+      - "8288:8288"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
   # 1. SHARED REDIS (Chat History & Cache)
   redis:
     image: redis:alpine
     ports:
       - "6379:6379"
-    command: >
-      redis-server 
-      --save "" 
-      --appendonly no
-    restart: unless-stopped
+    volumes:
+      - redis_data:/data # <--- ADD THIS
+    command: 
+      redis-server --appendonly yes
+    restart: 
+      unless-stopped
 
-  # 2. BACKEND (FastAPI & Inngest Functions)
-  backend:
-    build: 
-      context: .
-      dockerfile: inngest_workflow/Dockerfile
-    ports:
-      - "8000:8000"
-    environment:
-      - REDIS_URL=redis://redis:6379
-      - PINECONE_API_KEY=${PINECONE_API_KEY}
-      - INNGEST_EVENT_KEY=local_dev_key
-      - INNGEST_DEV=1
-      - INNGEST_BASE_URL=http://inngest:8288  
-    depends_on:
-      - redis
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-      start_period: 20s
-    restart: unless-stopped
-
-  # 3. FRONTEND (Streamlit UI)
+  # 2. FRONTEND (Streamlit UI)
   ui:
     build:
       context: .
       dockerfile: ui/Dockerfile.ui
+    volumes:
+      - ./db_data:/app/db_data
+      - ./ui:/app/ui
+      - ./SQLdb/data:/app/SQLdb/data
     ports:
       - "8501:8501"
     env_file:
@@ -45,23 +68,21 @@ services:
     environment:
       - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
       - REDIS_URL=redis://redis:6379
-      - BACKEND_URL=http://backend:8000
+      - PYTHONPATH=/app
+      - DB_PATH=sqlite:////app/db_data/patients.db
+      - DB_SERVICE_URL=http://db-service:8002
+      - IMAGE_SERVICE_URL=http://image-processing-service:8001
+      - CHROMADB_HOST=chromadb
+      - CHROMADB_PORT=8000
+      - EMBEDDING_SERVICE_HOST=embedding-service
+      - EMBEDDING_SERVICE_PORT=5001   
     depends_on:
-      - backend
+      - redis
+      - db-service    
+
     restart: unless-stopped
 
-  # 4. INNGEST DEV SERVER (Orchestrator)
-  inngest:
-    image: inngest/inngest:latest
-    ports:
-      - "8288:8288"
-    command: inngest dev -u http://backend:8000/api/inngest --host 0.0.0.0
-    depends_on:
-      backend:
-        condition: service_healthy
-    restart: unless-stopped
-
-  # 5. Embedding Service
+  # 3. Embedding Service
   embedding-service:
     build: 
       context: ./embedder
@@ -82,8 +103,8 @@ services:
       retries: 3
       start_period: 40s
 
-  # 6. Image Processing Service
-  image_processing:
+  # 4. Image Processing Service
+  image-processing-service:
     build: ./image_processing
     command: uvicorn service:app --host 0.0.0.0 --port 8001
     ports: ["8001:8001"]
@@ -92,8 +113,14 @@ services:
     environment:
       - PYTHONPATH=/app/image_processing
       - MODEL_WEIGHTS=densenet121-res224-all
+      - DB_SERVICE_URL=http://db-service:8002
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY}
+
     volumes:
-    - ./image_processing:/app/image_processing
+      - ./image_processing:/app/image_processing
+      - scan_data:/scans
+    depends_on:
+      - db-service
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
@@ -101,3 +128,65 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+
+  # 7. Patient Metadata (SQL)
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=medical_assistant
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # 8. Chat Memory (ChromaDB)
+  chromadb:
+    image: chromadb/chroma:latest
+    volumes:
+      - ./chroma_data:/chroma/chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+    ports:
+      - "8002:8000"
+
+  # 9. MongoDB
+  mongo:
+    image: mongo:7
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
+
+  # 10. mongo-Service
+  db-service:
+    build: ./mongo_service
+    container_name: mongo_service
+    ports:
+      - "8003:8002"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017
+      - DB_NAME=xray_service
+      - COLLECTION_NAME=analysis_results
+    depends_on:
+      mongo:
+        condition: service_started
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+volumes:
+  mongo_data:
+  scan_data:
+  postgres_data:
+  redis_data:
+
+
+

@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
+from langchain_mistralai.chat_models import ChatMistralAI
 
 load_dotenv()
 
@@ -9,21 +9,20 @@ def get_llm():
     Initialise and return the LLM client configured for OpenRouter.
 
     Returns:
-        ChatOpenAI: Configured LLM instance
+       Configured LLM instance
     """
     # Load API key from environment
-    api_key = os.getenv("OPENROUTER_API_KEY")
+    api_key = os.getenv("MISTRAL_API_KEY")
 
     if not api_key:
-        raise ValueError("OPENROUTER_API_KEY not found in environment variables")
+        raise ValueError("MISTRAL_API_KEY= not found in environment variables")
 
-    # Initialize ChatOpenAI with OpenRouter configuration
-    llm = ChatOpenAI(
-        model_name="arcee-ai/trinity-large-preview:free",  # Free tier for MVP
-        openai_api_key=api_key,
-        openai_api_base="https://openrouter.ai/api/v1",
-        temperature=0.3,  # Lower temp for more consistent medical responses
-        max_tokens=500  # Adjust based on your needs
+    # Initialize Mistral 
+    llm = ChatMistralAI(
+        model="mistral-large-latest",
+        mistral_api_key=api_key,
+        temperature=0.3,
+        max_tokens=2000
     )
 
     return llm
