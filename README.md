@@ -1,8 +1,9 @@
 # AI Diagnosis Assistant
  **Live Demo:** http://130.162.172.14:8501
  
- **Github Repository:** https://github.kcl.ac.uk/k24066415/5CCSAGAPLosCaballos
-
+ **Origin University's Github Repository:** https://github.kcl.ac.uk/k24066415/5CCSAGAPLosCaballos
+ **Personal Github Repository:** https://github.com/knd8412/AI-diagnosis
+ 
 A Retrieval-Augmented Generation (RAG) system that assists clinicians in diagnosing respiratory diseases. The system accepts free-text symptom descriptions, retrieves relevant conditions from a medical knowledge base, generates ranked differential diagnoses with explanations, recommends follow-up tests, and optionally analyses chest X-rays using a pre-trained deep learning model.
  
 Built by Team Los Caballos — King's College London, 2025/26.
